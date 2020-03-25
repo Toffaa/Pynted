@@ -3,7 +3,7 @@ import scrapy
 
 class VintedcodeSpider(scrapy.Spider):
     name = 'VintedCode'
-    allowed_domains = ['vinted.fr/']
+    allowed_domains = ['vinted.fr']
     base_url = 'https://www.vinted.fr/vetements?'
     first_code = 0
     last_code = 100
