@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import json
 import re
 
 
@@ -28,6 +29,12 @@ class VintedadSpider(scrapy.Spider):
     def parse_ad(self, response):
         ad_details = {}
         
+        property_divs = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[2]').get()
+
+
+
+
+
         price = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[1]/div[1]/text()').get()
         ad_details['price'] = price.replace(',', '.')[:-2]
         
@@ -59,7 +66,12 @@ class VintedadSpider(scrapy.Spider):
 
         ad_details['uploadedDatetime'] = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[2]/div[8]/div[2]/time/@datetime').get()
 
-        #/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[2]/div[1]/div/div/div/div[1]/span
+        description = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[2]/script/text()').get()
+        description = json.loads(description)
+        ad_details['title'] = description['content']['title']
+        ad_details['description'] = description['content']['description']
+        ad_details['itemId'] = description['itemId']
+
         #response.xpath('/text()').get()
         #response.xpath('/text()').get()
 
