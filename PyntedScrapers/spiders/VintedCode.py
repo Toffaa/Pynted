@@ -12,10 +12,16 @@ class VintedcodeSpider(scrapy.Spider):
 
 
     def start_requests(self):
+        # Initial way to send data with scrapy.http.Request
         formatted_lang = '{"locale":"%s"}' % self.lang
-        scrapy.http.Request('https://www.vinted.fr/session_locale', method='PUT', body=formatted_lang)
+        # New way with JsonRequest, but still not working yet...
+        formatted_lang = {"locale" : self.lang}
+        scrapy.http.JsonRequest('https://www.vinted.fr/session_locale', method='PUT', data=formatted_lang, callback=self.parse_lang)
         for i in range(self.first_code, self.last_code):
             yield scrapy.http.Request(self.base_url + self.tag + '[]=%d' % i, meta={'index':i}, callback=self.parse)
+    
+    def parse_lang(self, response):
+        return
 
     def parse(self, response):
         code = response.meta['index']
