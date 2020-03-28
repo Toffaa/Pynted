@@ -40,7 +40,7 @@ class VintedadSpider(scrapy.Spider):
     def parse_ad(self, response):
         ad_details = {}
         
-        ## Scraping the properties
+        ## Scraping the properties of the announce
         property_divs = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[2]')
 
         for div in range(1,9):
@@ -85,17 +85,42 @@ class VintedadSpider(scrapy.Spider):
                 ad_details['uploadedDatetime'] = property_divs.xpath('.//div[8]/div[2]/time/@datetime').get()
 
         price = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[1]/div[1]/span/div/text()').get()
-        ad_details['price'] = float(price.replace(',', '.')[:-2])
+        ad_details['price'] = float(price[:-2].replace(' ','').replace(',', '.'))
         
+        ## Scraping title and description
         description = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[2]/script/text()').get()
         description = json.loads(description)
         ad_details['title'] = description['content']['title']
         ad_details['description'] = description['content']['description']
         ad_details['itemId'] = description['itemId']
-        ad_details['userName'] = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[2]/div[1]/div[2]/div[1]/h4/span/span/a/text()').get()
+
+        ## Scraping user information
+        user_information = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[2]')
+        user_url = user_information.xpath('.//div/a/@href').get()
+        ad_details['userId'] = user_url.split('/')[2]
+        ad_details['userName'] = user_information.xpath('.//div[1]/div[2]/div[1]/h4/span/span/a/text()').get()
+        ad_details['lastSeen'] = user_information.xpath('.//div[1]/div[2]/div[3]/div/span/time/@datetime').get()
+
+        # Scraping ratings information
+        user_ratings = user_information.xpath('.//div[1]/div[2]/div[1]/a/div')
+        ad_details['nbRating'] = user_ratings.xpath('.//div[6]/div/text()').get()
+        if ad_details['nbRating'] is None:
+            ad_details['nbRating'] = 0
+        else:
+            rate = 0
+            for i in range(1, 6):
+                star = user_ratings.xpath('.//div[%d]/@class' % i).get()
+                if star == 'c-rating__star c-rating__star--full':
+                    rate = rate + 1
+                elif star == 'c-rating__star c-rating__star--half-full':
+                    rate = rate + 0.5
+                    break
+                else:
+                    break
+            ad_details['rate'] = rate
+
+        ad_details['url'] = response.request.url
 
         #response.xpath('/text()').get()
-        #response.xpath('/text()').get()
-
         yield ad_details
  
