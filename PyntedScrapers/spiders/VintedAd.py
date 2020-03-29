@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy.loader import ItemLoader
+from PyntedScrapers.items import Ad
+from PyntedScrapers.loaders import AdLoader
+
 import json
 import re
-from scrapy.loader import ItemLoader
-from pynted import Ad
+import w3lib.html
+
 
 
 
@@ -41,78 +45,71 @@ class VintedadSpider(scrapy.Spider):
                 break
     
     def parse_ad(self, response):
-        ad = ItemLoader(item=Ad(), response=response)
-        
+        il = AdLoader(item=Ad(), response=response)
+
         ## Scraping the properties of the announce
-        property_divs = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[2]')
-
+        property_loader = il.nested_xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[2]')
         for div in range(1,9):
-            current_property = property_divs.xpath('.//div[%d]/div[1]/text()' % div).get()
-            
-            if current_property is None:
+            current_property = property_loader.get_xpath('.//div[%d]/div[1]/text()' % div)
+            if current_property == []:
                 break
+            elif current_property[0].find(self.properties_name['brand']) != -1:
+                property_loader.add_xpath('brand', './/div[%d]/div[2]/a/span/text()' % div)
 
-            elif current_property.find(self.properties_name['brand']) != -1:
-                ad_details['brand'] = property_divs.xpath('.//div[%d]/div[2]/a/span/text()' % div).get()
-
-            elif current_property.find(self.properties_name['size']) != -1:
-                size = property_divs.xpath('.//div[%d]/div[2]/text()' % div).get()
-                ad_details['size'] = re.sub(' +', ' ',size.replace('\n', ''))
+            elif current_property[0].find(self.properties_name['size']) != -1:
+                property_loader.add_xpath('size', './/div[%d]/div[2]/text()' % div)
                 
-            elif current_property.find(self.properties_name['condition']) != -1:
-                ad_details['condition'] = property_divs.xpath('.//div[%d]/div[2]/text()' % div).get()
+            elif current_property[0].find(self.properties_name['condition']) != -1:
+                property_loader.add_xpath('condition', './/div[%d]/div[2]/text()' % div)
 
-            elif current_property.find(self.properties_name['color']) != -1:
-                color = property_divs.xpath('.//div[%d]/div[2]/text()' % div).get()
-                ad_details['color'] = color.split(', ')
+            elif current_property[0].find(self.properties_name['color']) != -1:
+                property_loader.add_xpath('color', './/div[%d]/div[2]/text()' % div)
 
-            elif current_property.find(self.properties_name['location']) != -1:
-                location = property_divs.xpath('.//div[%d]/div[2]/text()' % div).get()
-                location = location.replace(' ','').replace('\n', '').split(',')
+            elif current_property[0].find(self.properties_name['location']) != -1:
+                location = property_loader.get_xpath('.//div[%d]/div[2]/text()' % div)[0]
+                location = w3lib.html.strip_html5_whitespace(location).split(',')
                 if len(location) == 2:
-                    ad_details['City'] = location[0]
-                    ad_details['Country'] = location[1]
+                    property_loader.add_value('city', location[0])
+                    property_loader.add_value('country', location[1])
                 else:
-                    ad_details['City'] = None
-                    ad_details['Country'] = location[0]
+                    property_loader.add_value('city', None)
+                    property_loader.add_value('country', location[0])
 
-            elif current_property.find(self.properties_name['views']) != -1:
-                views = property_divs.xpath('.//div[%d]/div[2]/text()' % div).get()
-                ad_details['views'] = int(views)
-            elif current_property.find(self.properties_name['interested']) != -1:
-                interested = property_divs.xpath('.//div[%d]/div[2]/text()'  % div).get()
-                interested = [str(i) for i in interested.split() if i.isdigit()]
-                ad_details['interested'] = int(''.join(interested))
+            elif current_property[0].find(self.properties_name['views']) != -1:
+                property_loader.add_xpath('views', './/div[%d]/div[2]/text()' % div)
 
-            elif current_property.find(self.properties_name['uploadedDatetime']) != -1:
-                ad_details['uploadedDatetime'] = property_divs.xpath('.//div[8]/div[2]/time/@datetime').get()
+            elif current_property[0].find(self.properties_name['interested']) != -1:
+                property_loader.add_xpath('interested', './/div[%d]/div[2]/text()' % div, re=r'\d+')
 
-        price = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[1]/div[1]/span/div/text()').get()
-        ad_details['price'] = float(price[:-2].replace(' ','').replace(',', '.'))
+            elif current_property[0].find(self.properties_name['uploadedDatetime']) != -1:
+                property_loader.add_xpath('uploadedDatetime', './/div[8]/div[2]/time/@datetime')
+
+        il.add_xpath('price', '/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[1]/div[1]/span/div/text()', re=r'\d+,d+')
         
         ## Scraping title and description
         description = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[2]/script/text()').get()
         description = json.loads(description)
-        ad_details['title'] = description['content']['title']
-        ad_details['description'] = description['content']['description']
-        ad_details['itemId'] = description['itemId']
+        il.add_value('title', description['content']['title'])
+        il.add_value('description', description['content']['description'])
+        il.add_value('itemId', description['itemId'])
 
         ## Scraping user information
-        user_information = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[2]')
-        user_url = user_information.xpath('.//div/a/@href').get()
-        ad_details['userId'] = user_url.split('/')[2]
-        ad_details['userName'] = user_information.xpath('.//div[1]/div[2]/div[1]/h4/span/span/a/text()').get()
-        ad_details['lastSeen'] = user_information.xpath('.//div[1]/div[2]/div[3]/div/span/time/@datetime').get()
+        user_loader = il.nested_xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[2]')
+        user_url = user_loader.get_xpath('.//div/a/@href')[0]
+        user_loader.add_value('userId', user_url.split('/')[2])
+        user_loader.add_xpath('userName', './/div[1]/div[2]/div[1]/h4/span/span/a/text()')
+        user_loader.add_xpath('lastSeen', './/div[1]/div[2]/div[3]/div/span/time/@datetime')
 
         # Scraping ratings information
-        user_ratings = user_information.xpath('.//div[1]/div[2]/div[1]/a/div')
-        ad_details['nbRating'] = user_ratings.xpath('.//div[6]/div/text()').get()
-        if ad_details['nbRating'] is None:
-            ad_details['nbRating'] = 0
+        ratings_loader = user_loader.nested_xpath('.//div[1]/div[2]/div[1]/a/div')
+        nbRating = ratings_loader.get_xpath('.//div[6]/div/text()')
+        if nbRating == []:
+            ratings_loader.add_value('nbRating', 0)
         else:
+            ratings_loader.add_value('nbRating', nbRating[0])
             rate = 0
             for i in range(1, 6):
-                star = user_ratings.xpath('.//div[%d]/@class' % i).get()
+                star = ratings_loader.get_xpath('.//div[%d]/@class' % i)[0]
                 if star == 'c-rating__star c-rating__star--full':
                     rate = rate + 1
                 elif star == 'c-rating__star c-rating__star--half-full':
@@ -120,10 +117,10 @@ class VintedadSpider(scrapy.Spider):
                     break
                 else:
                     break
-            ad_details['rate'] = rate
+            ratings_loader.add_value('rate', rate)
 
-        ad_details['url'] = response.request.url
+        il.add_value('url', response.request.url)
 
         #response.xpath('/text()').get()
-        yield ad_details
+        yield il.load_item()
  
