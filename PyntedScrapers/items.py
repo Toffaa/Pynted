@@ -6,9 +6,51 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy.loader.processors import MapCompose, TakeFirst
+
+import w3lib.html
+
 
 
 class PyntedscrapersItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+#input_processor=MapCompose()
+class Ad(scrapy.Item):
+    itemId = scrapy.Field()
+    url = scrapy.Field()
+
+    title = scrapy.Field()
+    description = scrapy.Field()
+    price = scrapy.Field()
+
+    brand = scrapy.Field()
+    size = scrapy.Field(
+        input_processor=MapCompose(w3lib.html.strip_html5_whitespace),
+    )
+    condition = scrapy.Field()
+    color = scrapy.Field()
+    city = scrapy.Field()
+    country = scrapy.Field()
+    views = scrapy.Field(
+        input_processor=MapCompose(int)
+    )
+    interested = scrapy.Field(
+        input_processor=MapCompose(int)
+    )
+    uploadedDatetime = scrapy.Field()
+    
+    userId = scrapy.Field()
+    userName = scrapy.Field()
+    lastSeen = scrapy.Field()
+    nbRating = scrapy.Field(
+        input_processor=MapCompose(int)
+    )
+    rate = scrapy.Field()
+
+
+
+    
+    
