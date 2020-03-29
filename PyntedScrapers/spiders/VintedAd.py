@@ -2,6 +2,9 @@
 import scrapy
 import json
 import re
+from scrapy.loader import ItemLoader
+from pynted import Ad
+
 
 
 class VintedadSpider(scrapy.Spider):
@@ -38,7 +41,7 @@ class VintedadSpider(scrapy.Spider):
                 break
     
     def parse_ad(self, response):
-        ad_details = {}
+        ad = ItemLoader(item=Ad(), response=response)
         
         ## Scraping the properties of the announce
         property_divs = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[2]')
