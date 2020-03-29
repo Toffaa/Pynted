@@ -10,13 +10,6 @@ from scrapy.loader.processors import MapCompose, TakeFirst
 
 import w3lib.html
 
-
-
-class PyntedscrapersItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
-
 #input_processor=MapCompose()
 class Ad(scrapy.Item):
     itemId = scrapy.Field()
@@ -24,7 +17,9 @@ class Ad(scrapy.Item):
 
     title = scrapy.Field()
     description = scrapy.Field()
-    price = scrapy.Field()
+    price = scrapy.Field(
+        input_processor=MapCompose(float)
+    )
 
     brand = scrapy.Field()
     size = scrapy.Field(
@@ -48,7 +43,9 @@ class Ad(scrapy.Item):
     nbRating = scrapy.Field(
         input_processor=MapCompose(int)
     )
-    rate = scrapy.Field()
+    rate = scrapy.Field(
+        input_processor=MapCompose(int)
+    )
 
 
 

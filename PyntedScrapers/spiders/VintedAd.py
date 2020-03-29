@@ -84,7 +84,7 @@ class VintedadSpider(scrapy.Spider):
             elif current_property[0].find(self.properties_name['uploadedDatetime']) != -1:
                 property_loader.add_xpath('uploadedDatetime', './/div[8]/div[2]/time/@datetime')
 
-        il.add_xpath('price', '/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[1]/div[1]/span/div/text()', re=r'\d+,d+')
+        il.add_xpath('price', '/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[1]/div[1]/div[1]/span/div/text()', re=r'\d+,\d+')
         
         ## Scraping title and description
         description = response.xpath('/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div[2]/script/text()').get()
