@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from scrapy.loader import ItemLoader
 from PyntedScrapers.items import Ad
 from PyntedScrapers.loaders import AdLoader
 

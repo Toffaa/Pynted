@@ -47,6 +47,10 @@ class Ad(scrapy.Item):
         input_processor=MapCompose(int)
     )
 
+class Catalog_id(scrapy.Item):
+    category = scrapy.Field()
+    code = scrapy.Field()
+    value = scrapy.Field()
 
 
     
