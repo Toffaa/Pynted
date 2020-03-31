@@ -6,7 +6,3 @@ import re
 
 class AdLoader(ItemLoader):
     default_output_processor = TakeFirst()
-
-class CodeLoader(ItemLoader):
-    default_output_processor = TakeFirst()
- 

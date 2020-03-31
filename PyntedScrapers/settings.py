@@ -14,6 +14,8 @@ BOT_NAME = 'PyntedScrapers'
 SPIDER_MODULES = ['PyntedScrapers.spiders']
 NEWSPIDER_MODULE = 'PyntedScrapers.spiders'
 
+LOG_LEVEL = 'DEBUG'
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'PyntedScrapers (+http://www.yourdomain.com)'

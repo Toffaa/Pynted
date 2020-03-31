@@ -18,7 +18,7 @@ class Ad(scrapy.Item):
     title = scrapy.Field()
     description = scrapy.Field()
     price = scrapy.Field(
-        input_processor=MapCompose(float)
+        input_processor=MapCompose(lambda x: x.replace(',', '.'), float)
     )
 
     brand = scrapy.Field()
@@ -47,10 +47,11 @@ class Ad(scrapy.Item):
         input_processor=MapCompose(int)
     )
 
-class Catalog_id(scrapy.Item):
-    category = scrapy.Field()
-    code = scrapy.Field()
-    value = scrapy.Field()
+    reserved = scrapy.Field()
+    daysLeft = scrapy.Field(
+        input_processor=MapCompose(int)
+    )
+
 
 
     

@@ -7,12 +7,12 @@ import json
 import re
 from w3lib.html import strip_html5_whitespace
 
-class VintedadSpider(scrapy.Spider):
-    name = 'VintedAd'
+class AdSpider(scrapy.Spider):
+    name = 'Ad'
     allowed_domains = ['vinted.fr']
 
     last_ad = False
-    base_url = 'https://www.vinted.fr/vetements?'
+    base_url = ['https://www.vinted.fr/femmes/talons-hauts-and-escarpins/445354379-ecarpin-38-bleu']
 
     offset = 0
 
@@ -27,22 +27,11 @@ class VintedadSpider(scrapy.Spider):
         'uploadedDatetime' : 'Ajouté',
         'reserved' : 'Réservé'
     }
-
     def start_requests(self):
-        i = 1
-        while self.last_ad is not True:
-            yield scrapy.http.Request(self.base_url + 'page=%d' % i)
-            i = i + 1
 
-    def parse(self, response):
-        for i in range(1, 25):
-            ad_url = response.xpath('//*[@id="catalog"]/div[4]/div/div[2]/div[%d]/section/figure/div/a/@href' % i).get()
-            if ad_url is not None:
-                yield response.follow(ad_url, callback=self.parse_ad)
-            else:
-                self.last_ad = True
-                break
-    
+        for url in self.base_url:
+            yield scrapy.Request(url=url, callback=self.parse_ad)
+
     def parse_ad(self, response):
         il = AdLoader(item=Ad(), response=response)
 
