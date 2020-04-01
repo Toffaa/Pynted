@@ -39,6 +39,7 @@ class VintedadSpider(scrapy.Spider):
             i = i + 1
 
     def parse(self, response):
+        # Sending a request for each of the 24 ads by page
         for i in range(1, 25):
             ad_url = response.xpath('//*[@id="catalog"]/div[4]/div/div[2]/div[%d]/section/figure/div/a/@href' % i).get()
             if ad_url is not None:
@@ -61,7 +62,7 @@ class VintedadSpider(scrapy.Spider):
         second_div = '/html/body/div[4]/div/section/div/div[2]/main/aside/div[%d]' % (2 + self.offset)
 
 
-        ## Scraping the properties of the announce
+        # Scraping the properties of the announce
         property_loader = il.nested_xpath(first_div + '/div[1]/div[2]')
         for div in range(1,9):
             current_property = property_loader.get_xpath('.//div[%d]/div[1]/text()' % div)
@@ -96,18 +97,18 @@ class VintedadSpider(scrapy.Spider):
                 property_loader.add_xpath('interested', './/div[%d]/div[2]/text()' % div, re=r'\d+')
 
             elif current_property[0].find(self.properties_name['uploadedDatetime']) != -1:
-                property_loader.add_xpath('uploadedDatetime', './/div[8]/div[2]/time/@datetime')
+                property_loader.add_xpath('uploadedDatetime', './/div[%d]/div[2]/time/@datetime' % div)
 
         il.add_xpath('price', first_div + '/div[1]/div[1]/div[1]/span/div/text()', re=r'\d+,\d+')
         
-        ## Scraping title and description
+        # Scraping title and description
         description = response.xpath(first_div + '/div[2]/script/text()').get()
         description = json.loads(description)
         il.add_value('title', description['content']['title'])
         il.add_value('description', description['content']['description'])
         il.add_value('itemId', description['itemId'])
 
-        ## Scraping user information
+        # Scraping user information
         user_loader = il.nested_xpath(second_div)
         user_url = user_loader.get_xpath('.//div/a/@href')[0]
         user_loader.add_value('userId', user_url.split('/')[2])
@@ -121,6 +122,7 @@ class VintedadSpider(scrapy.Spider):
             ratings_loader.add_value('nbRating', 0)
         else:
             ratings_loader.add_value('nbRating', nbRating[0])
+            # Counting the number of stars
             rate = 0
             for i in range(1, 6):
                 star = ratings_loader.get_xpath('.//div[%d]/@class' % i)[0]
