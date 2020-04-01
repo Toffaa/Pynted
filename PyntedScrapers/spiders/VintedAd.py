@@ -4,7 +4,9 @@ from PyntedScrapers.items import Ad
 from PyntedScrapers.loaders import AdLoader
 
 import json
+import logging
 import re
+import time
 from w3lib.html import strip_html5_whitespace
 
 class VintedadSpider(scrapy.Spider):
@@ -32,6 +34,8 @@ class VintedadSpider(scrapy.Spider):
         i = 1
         while self.last_ad is not True:
             yield scrapy.http.Request(self.base_url + 'page=%d' % i)
+            if (i % 10) == 0:
+                logging.info('Scraping page %d' % i)
             i = i + 1
 
     def parse(self, response):
@@ -50,8 +54,8 @@ class VintedadSpider(scrapy.Spider):
 
         if reserved == self.properties_name['reserved']:
             self.offset = 1
-            il.add_value('reserved', True)
-            il.add_xpath('daysLeft', '/html/body/div[4]/div/section/div/div[2]/main/aside/div[1]/div/div/span/text()', re=r'\d+')
+        else:
+            self.offset = 0
         
         first_div = '/html/body/div[4]/div/section/div/div[2]/main/aside/div[%d]' % (1 + self.offset)
         second_div = '/html/body/div[4]/div/section/div/div[2]/main/aside/div[%d]' % (2 + self.offset)
@@ -131,5 +135,4 @@ class VintedadSpider(scrapy.Spider):
 
         il.add_value('url', response.request.url)
 
-        #response.xpath('/text()').get()
         yield il.load_item()
