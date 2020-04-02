@@ -12,11 +12,13 @@ from w3lib.html import strip_html5_whitespace
 class VintedadSpider(scrapy.Spider):
     name = 'VintedAd'
     allowed_domains = ['vinted.fr']
-
     last_ad = False
-    base_url = 'https://www.vinted.fr/vetements?'
-
     offset = 0
+
+    try:
+        url
+    except NameError:
+        url = 'https://www.vinted.fr/vetements?'
 
     properties_name = {
         'brand' : 'Marque',
@@ -33,9 +35,9 @@ class VintedadSpider(scrapy.Spider):
     def start_requests(self):
         i = 1
         while self.last_ad is not True:
-            yield scrapy.http.Request(self.base_url + 'page=%d' % i)
+            yield scrapy.http.Request(self.url + '&page=%d' % i)
             if (i % 10) == 0:
-                logging.info('Scraping page %d' % i)
+                logging.info('Reaching page %d' % i)
             i = i + 1
 
     def parse(self, response):
