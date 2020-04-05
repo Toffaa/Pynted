@@ -6,7 +6,7 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from scrapy.loader.processors import MapCompose, TakeFirst
+from scrapy.loader.processors import MapCompose, TakeFirst, Identity
 
 import w3lib.html
 
@@ -52,7 +52,11 @@ class Ad(scrapy.Item):
         input_processor=MapCompose(int)
     )
 
-
+    image_urls = scrapy.Field(
+        input_processor=Identity(),
+        output_processor=Identity()
+    )
+    images = scrapy.Field()
 
     
     

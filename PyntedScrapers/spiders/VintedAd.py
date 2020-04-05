@@ -6,7 +6,6 @@ from PyntedScrapers.loaders import AdLoader
 import json
 import logging
 import re
-import time
 from w3lib.html import strip_html5_whitespace
 
 class VintedadSpider(scrapy.Spider):
@@ -19,6 +18,17 @@ class VintedadSpider(scrapy.Spider):
         url
     except NameError:
         url = 'https://www.vinted.fr/vetements?'
+
+    try: 
+        download_images
+    except NameError:
+        download_images = 'False'
+        
+    try:
+        thread
+    except NameError:
+        thread = 'default'
+
 
     properties_name = {
         'brand' : 'Marque',
@@ -138,5 +148,9 @@ class VintedadSpider(scrapy.Spider):
             ratings_loader.add_value('rate', rate)
 
         il.add_value('url', response.request.url)
+
+        # Scraping images
+        if self.download_images == 'True':
+            il.add_xpath('image_urls', '/html/body/div[4]/div/section/div/div[2]/main/div/section/div/figure/a/@href')
 
         yield il.load_item()
