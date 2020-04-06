@@ -1,0 +1,125 @@
+(env) ubuntu@ip:~/Pynted$ scrapy crawl VintedAd -a download_images=True -a thread=full
+2020-04-06 00:30:57 [scrapy.utils.log] INFO: Scrapy 2.0.1 started (bot: PyntedScrapers)
+2020-04-06 00:30:57 [scrapy.utils.log] INFO: Versions: lxml 4.5.0.0, libxml2 2.9.10, cssselect 1.1.0, parsel 1.5.2, w3lib 1.21.0, Twisted 20.3.0, Python 3.6.9 (default, Nov  7 2019, 10:44:02) - [GCC 8.3.0], pyOpenSSL 19.1.0 (OpenSSL 1.1.1d  10 Sep 2019), cryptography 2.8, Platform Linux-4.15.0-1057-aws-x86_64-with-Ubuntu-18.04-bionic
+2020-04-06 00:30:57 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'PyntedScrapers',
+ 'FEED_EXPORT_ENCODING': 'utf-8',
+ 'FEED_URI': 's3://*mybucket*/%(name)s/%(thread)s/%(time)s.json',
+ 'LOG_LEVEL': 'INFO',
+ 'NEWSPIDER_MODULE': 'PyntedScrapers.spiders',
+ 'ROBOTSTXT_OBEY': True,
+ 'SPIDER_MODULES': ['PyntedScrapers.spiders']}
+2020-04-06 00:30:57 [scrapy.extensions.telnet] INFO: Telnet Password: 
+2020-04-06 00:30:57 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.feedexport.FeedExporter',
+ 'scrapy.extensions.logstats.LogStats']
+2020-04-06 00:30:57 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware',
+ 'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2020-04-06 00:30:57 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2020-04-06 00:30:57 [scrapy.middleware] INFO: Enabled item pipelines:
+['scrapy.pipelines.images.ImagesPipeline']
+2020-04-06 00:30:57 [scrapy.core.engine] INFO: Spider opened
+2020-04-06 00:30:57 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2020-04-06 00:30:57 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2020-04-06 00:30:57 [root] INFO: Reaching page 10
+2020-04-06 00:30:59 [root] INFO: Reaching page 20
+
+2020-04-06 00:31:58 [scrapy.extensions.logstats] INFO: Crawled 1288 pages (at 1288 pages/min), scraped 176 items (at 176 items/min)
+
+2020-04-06 00:32:58 [scrapy.extensions.logstats] INFO: Crawled 2565 pages (at 1277 pages/min), scraped 389 items (at 213 items/min)
+2020-04-06 00:33:37 [root] INFO: Reaching page 30
+
+2020-04-06 00:33:58 [scrapy.extensions.logstats] INFO: Crawled 3808 pages (at 1243 pages/min), scraped 610 items (at 221 items/min)
+2020-04-06 00:34:57 [scrapy.extensions.logstats] INFO: Crawled 5108 pages (at 1300 pages/min), scraped 842 items (at 232 items/min)
+2020-04-06 00:35:13 [root] INFO: Reaching page 40
+2020-04-06 00:35:57 [scrapy.extensions.logstats] INFO: Crawled 6360 pages (at 1252 pages/min), scraped 1060 items (at 218 items/min)
+2020-04-06 00:36:09 [root] INFO: Reaching page 50
+2020-04-06 00:36:57 [scrapy.extensions.logstats] INFO: Crawled 7629 pages (at 1269 pages/min), scraped 1296 items (at 236 items/min)
+2020-04-06 00:37:12 [root] INFO: Reaching page 60
+2020-04-06 00:37:57 [scrapy.extensions.logstats] INFO: Crawled 8898 pages (at 1269 pages/min), scraped 1536 items (at 240 items/min)
+2020-04-06 00:38:02 [root] INFO: Reaching page 70
+2020-04-06 00:38:02 [root] INFO: Reaching page 80
+2020-04-06 00:38:58 [scrapy.extensions.logstats] INFO: Crawled 10162 pages (at 1264 pages/min), scraped 1753 items (at 217 items/min)
+2020-04-06 00:39:47 [root] INFO: Reaching page 90
+2020-04-06 00:39:57 [scrapy.extensions.logstats] INFO: Crawled 11435 pages (at 1273 pages/min), scraped 1992 items (at 239 items/min)
+2020-04-06 00:40:36 [root] INFO: Reaching page 100
+2020-04-06 00:40:57 [scrapy.extensions.logstats] INFO: Crawled 12701 pages (at 1266 pages/min), scraped 2226 items (at 234 items/min)
+2020-04-06 00:41:50 [root] INFO: Reaching page 110
+2020-04-06 00:41:57 [scrapy.extensions.logstats] INFO: Crawled 13988 pages (at 1287 pages/min), scraped 2443 items (at 217 items/min)
+2020-04-06 00:42:34 [root] INFO: Reaching page 120
+2020-04-06 00:42:58 [scrapy.extensions.logstats] INFO: Crawled 15277 pages (at 1289 pages/min), scraped 2666 items (at 223 items/min)
+2020-04-06 00:43:54 [root] INFO: Reaching page 130
+2020-04-06 00:43:58 [scrapy.extensions.logstats] INFO: Crawled 16512 pages (at 1235 pages/min), scraped 2892 items (at 226 items/min)
+2020-04-06 00:44:57 [scrapy.extensions.logstats] INFO: Crawled 17811 pages (at 1299 pages/min), scraped 3137 items (at 245 items/min)
+2020-04-06 00:45:37 [root] INFO: Reaching page 140
+2020-04-06 00:45:57 [scrapy.extensions.logstats] INFO: Crawled 19087 pages (at 1276 pages/min), scraped 3350 items (at 213 items/min)
+2020-04-06 00:46:07 [root] INFO: Reaching page 150
+2020-04-06 00:46:08 [root] INFO: Reaching page 160
+2020-04-06 00:46:58 [scrapy.extensions.logstats] INFO: Crawled 20347 pages (at 1260 pages/min), scraped 3569 items (at 219 items/min)
+
+2020-04-06 00:47:57 [scrapy.extensions.logstats] INFO: Crawled 21538 pages (at 1191 pages/min), scraped 3785 items (at 216 items/min)
+2020-04-06 00:48:45 [root] INFO: Reaching page 170
+2020-04-06 00:48:57 [scrapy.extensions.logstats] INFO: Crawled 22780 pages (at 1242 pages/min), scraped 4018 items (at 233 items/min)
+2020-04-06 00:49:04 [root] INFO: Reaching page 180
+2020-04-06 00:49:45 [root] INFO: Reaching page 190
+2020-04-06 00:49:58 [scrapy.extensions.logstats] INFO: Crawled 24031 pages (at 1251 pages/min), scraped 4249 items (at 231 items/min)
+2020-04-06 00:50:58 [scrapy.extensions.logstats] INFO: Crawled 25338 pages (at 1307 pages/min), scraped 4484 items (at 235 items/min)
+2020-04-06 00:51:24 [root] INFO: Reaching page 200
+2020-04-06 00:51:24 [root] INFO: Reaching page 210
+2020-04-06 00:51:57 [scrapy.extensions.logstats] INFO: Crawled 26618 pages (at 1280 pages/min), scraped 4730 items (at 246 items/min)
+2020-04-06 00:52:46 [root] INFO: Reaching page 220
+2020-04-06 00:52:57 [scrapy.extensions.logstats] INFO: Crawled 27884 pages (at 1266 pages/min), scraped 4974 items (at 244 items/min)
+2020-04-06 00:53:45 [scrapy.core.engine] INFO: Closing spider (finished)
+2020-04-06 00:53:45 [scrapy.extensions.feedexport] INFO: Stored jsonlines feed (5188 items) in: s3://toffaascrapingbucket/VintedAd/full/2020-04-06T00-30-57.json
+2020-04-06 00:53:45 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 22550160,
+ 'downloader/request_count': 28883,
+ 'downloader/request_method_count/GET': 28883,
+ 'downloader/response_bytes': 2805790623,
+ 'downloader/response_count': 28883,
+ 'downloader/response_status_count/200': 28881,
+ 'downloader/response_status_count/404': 1,
+ 'downloader/response_status_count/500': 1,
+ 'dupefilter/filtered': 234,
+ 'elapsed_time_seconds': 1367.354874,
+ 'file_count': 23466,
+ 'file_status_count/downloaded': 23466,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2020, 4, 6, 0, 53, 45, 138308),
+ 'item_scraped_count': 5188,
+ 'log_count/INFO': 55,
+ 'memusage/max': 462852096,
+ 'memusage/startup': 75407360,
+ 'request_depth_max': 1,
+ 'response_received_count': 28882,
+ 'retry/count': 1,
+ 'retry/reason_count/500 Internal Server Error': 1,
+ 'robotstxt/request_count': 2,
+ 'robotstxt/response_count': 2,
+ 'robotstxt/response_status_count/200': 1,
+ 'robotstxt/response_status_count/404': 1,
+ 'scheduler/dequeued': 5415,
+ 'scheduler/dequeued/memory': 5415,
+ 'scheduler/enqueued': 5415,
+ 'scheduler/enqueued/memory': 5415,
+ 'start_time': datetime.datetime(2020, 4, 6, 0, 30, 57, 783434)}
+2020-04-06 00:53:45 [scrapy.core.engine] INFO: Spider closed (finished)

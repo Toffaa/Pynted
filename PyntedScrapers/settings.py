@@ -9,23 +9,28 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+AWS_ACCESS_KEY_ID = 'KEY_ID'
+
+AWS_SECRET_ACCESS_KEY = 'key'
+
 AWS_REGION_NAME = 'eu-west-3'
+
+FEED_URI = 's3://yourbucket/%(name)s/%(thread)s/%(time)s.json'
+
+IMAGES_STORE = 's3://yourbucket/images'
+
+FEED_FORMAT = 'jsonlines'
+
 
 BOT_NAME = 'PyntedScrapers'
 
 FEED_EXPORT_ENCODING = 'utf-8'
-
-FEED_FORMAT = 'jsonlines'
-
-FEED_URI = 's3://toffaascrapingbucket/%(name)s/%(thread)s/%(time)s.json'
 
 LOG_LEVEL = 'INFO'
 
 NEWSPIDER_MODULE = 'PyntedScrapers.spiders'
 
 ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
-
-IMAGES_STORE = 's3://toffaascrapingbucket/images'
 
 IMAGES_URLS_FIELD = 'image_urls'
 

@@ -125,5 +125,4 @@ dmypy.json
 .pyre/
 *.csv
 *.json
-*.json
 reponse_bad.html
