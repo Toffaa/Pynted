@@ -1,5 +1,11 @@
 # Pynted
- 
+
+___
+
+***Built in 2020. Vinted's site structure has changed since; this repo stands as an archive of the approach (Scrapy + EC2/S3 deployment).***
+
+___
+
 Pynted is a web scraper based on **scrapy** designed to get data from [Vinted.fr](https://www.vinted.fr/).
 It gets all the data from user ads (item information, price, upload date, user rate...), and the pictures of the item.
 
@@ -7,10 +13,10 @@ I deployed this scraper on AWS, using the free tier of Amazon EC2 to run the spi
 With this configuration, I've been able to scrape the entire website in less than 30 minutes (23 exactly), gathering 5188 ads, and 23547 pictures (total size = 1.3GB). You can see the log of this operation [here](results/scraping.log).
 The cost for a full scraping of Vinted and storage on S3 is approximatively $0.10 .
 
-Even if this project is quite small, it's using scrapy items to ease the developpement (especially the cleaning and transformation of raw data) and make the spider code cleaner.
+Even if this project is quite small, it's using scrapy items to ease the development (especially the cleaning and transformation of raw data) and make the spider code cleaner.
 Also, the spider uses as much as possible nested loaders and relative XPATH, making it easily updatable if the ad page structure changes. You can check the code in the spider *VintedAd.py*.
 
-I also provided an example of scrapped data [here](results/example.json). I've checked the consistancy of the entire dataset using *pandas*, the only missing values are also missing in the ads (for example, a ad for a videogame doesn't have a size). Please note, if you want to import data into pandas, to use the argument *lines=True* in *pandas.read_json*, as the scraper is providing a *jsonlines* file.
+I also provided an example of scraped data [here](results/example.json). I've checked the consistency of the entire dataset using *pandas*, the only missing values are also missing in the ads (for example, a ad for a videogame doesn't have a size). Please note, if you want to import data into pandas, to use the argument *lines=True* in *pandas.read_json*, as the scraper is providing a *jsonlines* file.
 
 # Usage
 
